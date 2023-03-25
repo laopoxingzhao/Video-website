@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+
+<video id="myvideo" controls="controls"  autoplay>
+    <source src="/play" type="video/mp4">
+</video>
+<script>
+    $(document).ready(function () {
+        var myvideo = document.getElementById("myvideo");
+        // 获取视频观看进度
+        myvideo.addEventListener("timeupdate", function () {
+            console.log(myvideo.currentTime)
+        });
+        // 让视频观看到第10s
+        myvideo.currentTime = 10;
+        //获取视频的总长度
+        console.log(myvideo.duration)
+    })
+</script>
+</body>
+</html>

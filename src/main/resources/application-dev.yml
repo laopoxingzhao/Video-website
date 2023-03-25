@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    username: root
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/video?useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+
+
+#logging:
+#  level:
+#    root: warn
+
+#    com.alibaba.druid.sql: debug
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true #自动驼峰命名规则
+#  mapperLocations: classpath*:mapper/**/*Mapper.xml

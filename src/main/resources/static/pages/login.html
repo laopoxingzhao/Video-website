@@ -1,0 +1,61 @@
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1111</title>
+    <script src="../js/vue2.7.14.js"></script>
+    <script src="../js/axios.min.js"></script>
+    <style>
+        #app{
+            text-align: center;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<div id="app">
+    <p>{{ message }}</p>
+    <div>
+       id: <input type="text" v-model="user.name"/>
+        mima:<input type="password" v-model="user.password"/></br>
+        <button @click="login">登录</button>
+    </div>
+    <button onclick="location.href='./register.html'">zhuce</button>
+</div>
+
+<script >
+    const  config = {
+        data(){
+            return{
+                message: 'LOGIN',
+                user : {
+                    name:'1111',
+                    password:'2222'
+                }
+
+            }
+        },
+        methods:{
+            login(){
+                axios.post('http://localhost/user/login',
+                   this.user
+                ).then(function (resp){
+                    var header = resp.headers['hu']
+                    console.log(header)
+                    localStorage.setItem("hu",header)
+                    console.log(resp)
+                })
+            }
+        }
+
+    }
+
+    const vue = new Vue(config).$mount('#app')
+</script>
+</body>
+
+</html>
