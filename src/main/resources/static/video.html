@@ -3,15 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<!--    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>-->
+
+    <style>
+        body{
+            background: #93d0ea;
+        }
+        /*div{*/
+        /*    margin: 20px auto;*/
+        /*    width: auto;*/
+        /*}*/
+        #myvideo{
+            display: block;
+            width: 1000px;
+            margin: auto;
+        }
+        .danm1u{
+            width: auto;
+            height: auto;
+            z-index:10;
+            /*float: left;*/
+            position: absolute;
+            margin-top: 30px;
+            animation-name: danmu;
+            animation-duration: 20s;
+            animation-iteration-count: 1;
+            animation-play-state:running;
+
+        }
+        .danm1u:hover{
+            animation-play-state:paused;
+        }
+        @keyframes danmu {
+            0%{
+                margin-left:1000px;
+            }
+            100% {
+                margin-left: 0%;
+            }
+
+        }
+    </style>
 </head>
 <body>
 
-<video id="myvideo" controls="controls"  autoplay>
-    <source src="/play" type="video/mp4">
-</video>
+<div style="margin: auto;width: 1000px; height: auto;"  >
+    <div style="margin-top: 10px" class="danm1u">cccc</div>
+    <div style="margin-top: 20px"  class="danm1u">cccc</div>
+    <div  style="margin-top: 40px"  class="danm1u">cccc</div>
+    <video id="myvideo" controls="controls"  autoplay>
+
+        <source src="/play" type="video/mp4">
+    </video>
+</div>
+
 <script>
-    $(document).ready(function () {
+    window.onload=function (){
         var myvideo = document.getElementById("myvideo");
         // 获取视频观看进度
         myvideo.addEventListener("timeupdate", function () {
@@ -21,7 +68,8 @@
         myvideo.currentTime = 10;
         //获取视频的总长度
         console.log(myvideo.duration)
-    })
+    }
+
 </script>
 </body>
 </html>
