@@ -1,48 +1,47 @@
 package com.hu.video.utils;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTCreator;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
+
+import io.jsonwebtoken.Jwt;
+import io.jsonwebtoken.JwtBuilder;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+
+@Slf4j
 
 public class JWTUtils {
     private static String SIGNATURE = "token!@#$%^7890";
 
     /**
      * 生成token
-     * @param map //传入payload
+     * @param claims //传入payload
      * @return 返回token
      */
-    public static String getToken(Map<String,String> map){
-        JWTCreator.Builder builder = JWT.create();
-        map.forEach((k,v)->{
-            builder.withClaim(k,v);
-        });
-        Calendar instance = Calendar.getInstance();
-        instance.add(Calendar.SECOND,7);
-        builder.withExpiresAt(instance.getTime());
-        return builder.sign(Algorithm.HMAC256(SIGNATURE)).toString();
+    public static String createToken(Map<String,Object> claims){
+//        HashMap<String, Object> claims = new HashMap<>();
+//        claims.put("uid",11111);
+        JwtBuilder jwtBuilder = Jwts.builder()
+                .signWith(SignatureAlgorithm.HS256,SIGNATURE)//签发算法， 密钥SIGNATURE
+                .setClaims(claims)//body数据，要唯一
+                .setIssuedAt(new Date())//签发时间
+                .setExpiration(new Date(System.currentTimeMillis()+24*60*60*60*1000)); //过期时间 一天
+        return jwtBuilder.compact();
     }
 
-    /**
-     * 验证token
-     * @param token
-     */
-    public static DecodedJWT verify(String token){
-        DecodedJWT verify = JWT.require(Algorithm.HMAC256(SIGNATURE)).build().verify(token);
-          return verify;
-    }
-
-    /**
-     * 获取token中payload
-     *
-     * @param token
-     * @return
-     */
-    public static String getToken(String token){
-        return JWT.require(Algorithm.HMAC256(SIGNATURE)).build().verify(token).getPayload();
+    public  static  Map<String,Object> checkToken(String token ){
+        try{
+            Jwt parse = Jwts.parser().setSigningKey(SIGNATURE).parse(token);
+            return (Map<String, Object>) parse.getBody();
+        }
+        catch (Exception e){
+//            e.printStackTrace();
+            log.info(e.getMessage());
+        }
+        return null;
     }
 }

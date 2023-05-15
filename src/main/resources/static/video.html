@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -25,10 +25,13 @@
             /*float: left;*/
             position: absolute;
             margin-top: 30px;
+            margin-left:1000px;
             animation-name: danmu;
             animation-duration: 20s;
             animation-iteration-count: 1;
             animation-play-state:running;
+            /*display: none;*/
+            visibility:hidden;
 
         }
         .danm1u:hover{
@@ -37,25 +40,37 @@
         @keyframes danmu {
             0%{
                 margin-left:1000px;
-            }
-            100% {
-                margin-left: 0%;
+                visibility: visible;
             }
 
+            100% {
+                margin-left: 0%;
+                visibility: visible;
+            }
+
+        }
+        #input{
+            margin-left:  30%;
+            background: aqua;
+            width: 20%;
+        }
+        #input input{
         }
     </style>
 </head>
 <body>
 
-<div style="margin: auto;width: 1000px; height: auto;"  >
-    <div style="margin-top: 10px" class="danm1u">cccc</div>
-    <div style="margin-top: 20px"  class="danm1u">cccc</div>
-    <div  style="margin-top: 40px"  class="danm1u">cccc</div>
+<div  style="margin: auto;width: 1000px; height: auto;"  >
+   <div id="danmukuang">
+       <div style="margin-top: 10px" class="danm1u">cccc</div>
+       <div style="margin-top: 20px"  class="danm1u">cccc</div>
+       <div  style="margin-top: 40px"  class="danm1u">cccc</div>
+   </div>
     <video id="myvideo" controls="controls"  autoplay>
-
         <source src="/play" type="video/mp4">
     </video>
 </div>
+    <div id="input"><input id="myinput" type="text"  placeholder="shuru" max="10"><button  onclick="send()">发送</button></div>
 
 <script>
     window.onload=function (){
@@ -65,9 +80,22 @@
             console.log(myvideo.currentTime)
         });
         // 让视频观看到第10s
-        myvideo.currentTime = 10;
+        // myvideo.currentTime = 10;
         //获取视频的总长度
-        console.log(myvideo.duration)
+        // console.log(myvideo.duration)
+    }
+    // axios.post("")
+    function send(){
+        var  span = document.createElement('span')
+        span.setAttribute('class','danm1u')
+        var   a = document.getElementById('myinput').value
+
+        span.innerText= a
+        document.getElementById('myinput').value = ''
+        // alert(a)
+        // span.innerText=
+        document.getElementById('danmukuang').appendChild(span)
+
     }
 
 </script>

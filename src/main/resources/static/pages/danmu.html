@@ -98,7 +98,7 @@
     100% {
       -webkit-transform: scale(1);
       transform: scale(1);
-    }
+      }
     }
   </style>
 </head>
@@ -185,7 +185,7 @@
     //发送
     function sendMsg(){
       var inputValue = inputBox.value;
-      inputValue .replace(/\ +/g, "");
+      inputValue.replace(/\ +/g, "");
 
       if (inputValue.length <= 0) {
         alert('请输入');
@@ -200,10 +200,11 @@
 
     //创建弹幕
     function createBarrage(msg, isSendMsg){
-      var divNode = document.createElement('div');
-      var spanNode = document.createElement('span');
+      var divNode = document.createElement('div');//弹幕
+      var spanNode = document.createElement('span');//举报
 
-      divNode.innerHTML = msg;
+      // divNode.innerHTML = msg;
+      divNode.innerText = msg;
       divNode.classList.add('barrage-item');
       barrageBox.appendChild(divNode);
 
@@ -236,6 +237,9 @@
       //添加属性
       this.distance = 0;
       this.width = ~~window.getComputedStyle(this).width.replace('px','');
+      //方法用于获取指定元素的 CSS 样式。
+
+      // 获取的样式是元素在浏览器中最终渲染效果的样式。
       this.offsetLeft = obj.left;
       this.timer = null;
 

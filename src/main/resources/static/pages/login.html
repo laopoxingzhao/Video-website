@@ -42,11 +42,16 @@
         methods:{
             login(){
                 axios.post('http://localhost/user/login',
-                   this.user
+                   this.user,{
+                        headers:
+                            {
+                                hu: localStorage.getItem("hu")
+                            }
+                    }
                 ).then(function (resp){
-                    var header = resp.headers['hu']
-                    // console.log(header)
-                    localStorage.setItem("hu",header)
+                    var data = resp.data;
+                    console.log(data)
+                    localStorage.setItem("hu",data)
                     // console.log(resp)
                 })
             }

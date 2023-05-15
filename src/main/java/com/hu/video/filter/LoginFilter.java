@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
-@WebFilter(filterName = "loginFilter")
+//@WebFilter(filterName = "loginFilter")
 @Slf4j
 public class LoginFilter implements Filter {
     public static  String[] urls = {"/pages/"};
