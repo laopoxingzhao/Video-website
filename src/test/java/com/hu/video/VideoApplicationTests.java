@@ -106,13 +106,16 @@ class VideoApplicationTests {
     void A() throws IOException, InterruptedException {
 //         ffmpeg -i play.mp4 -codec:v h264 -codec:a aac -f hls  -hls_base_url http://example.com/videos/ -hls_segment_filename "video%3d.ts" output.m3u8
 //        ProcessBuilder builder = new ProcessBuilder("ffmpeg", "-i", "play.mp4", "-c:v", "libx264", "-preset", "veryfast", "-c:a", "aac", "-b:a", "128k", "-f", "hls", "-hls_time", "10", "-hls_list_size", "5", "output.m3u8");
-        ProcessBuilder builder = new ProcessBuilder("ffmpeg", "-i", "play.mp4", "-c:v", "libx264",
+        String vid = "1";
+        String clarity = "360";
+        ProcessBuilder builder = new ProcessBuilder("ffmpeg", "-i", "../play.mp4", "-c:v", "libx264",
                 "-preset", "veryfast", "-c:a", "aac",
                 "-b:a", "128k", "-f", "hls",
+                "-vf","scale=640:360",
                 "-hls_time", "10", "-hls_list_size", "0",
-                "-hls_base_url", "http://localhost/video/",
-                "-hls_segment_filename", "video%3d.ts", "output.m3u8");
-        builder.directory(new File("D:\\下载\\Video\\11"));
+                "-hls_base_url", String.format("http://localhost/video/%s/%s/",vid,clarity),
+                "-hls_segment_filename", "video%3d.ts", "a.m3u8");
+        builder.directory(new File(String.format("D:\\下载\\Video\\1\\1\\%s",clarity)));
         Process process = builder.start();
         InputStream errorStream = process.getErrorStream();
         InputStreamReader isr = new InputStreamReader(errorStream);
@@ -130,5 +133,19 @@ class VideoApplicationTests {
         if (errorStream != null) {
             errorStream.close();
         }
+    }
+
+
+    @Test
+    void i(){
+        String path = String.format("D:\\下载\\Video\\%s\\%s", 777, 5000);
+        File newfile360 = new File(path+"\\360");
+        File newfile1080 = new File(path+"\\1080");
+        newfile360.mkdirs();
+        newfile1080.mkdirs();
+//        newfile1080.delete();
+
+
+
     }
 }

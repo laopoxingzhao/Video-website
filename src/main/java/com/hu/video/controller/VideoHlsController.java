@@ -1,40 +1,38 @@
 package com.hu.video.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.hu.video.entity.VideoFile;
 import com.hu.video.service.VideoFileService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
+
 
 @Controller
 @RequestMapping("video")
 @Slf4j
-public class VideoController1 {
-    @RequestMapping(value = "/playlist.m3u8", method = RequestMethod.GET)
-    public void playlist(HttpServletResponse response) throws Exception {
+public class VideoHlsController {
 
+
+    @Resource
+    private VideoFileService fileService;
+
+    @GetMapping("/{vid}/playlist.m3u8")
+    public void playlist(@PathVariable String vid,String clarity,HttpServletResponse response) throws Exception {
+        log.info("clarity",clarity);
+//        fileService.
         response.setContentType("application/vnd.apple.mpegurl");
-
-
-        String fileName = "D:\\下载\\Video\\11\\output.m3u8";
-//        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-//            String line;
-//            while ((line = br.readLine()) != null) {
-//                System.out.println(line);
-//                response.getWriter().println(line);
-//            }
-//        }
+        String fileName = "D:\\下载\\Video\\1\\1\\360\\output.m3u8";
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
 
@@ -43,8 +41,9 @@ public class VideoController1 {
             bufferedReader = new BufferedReader(fileReader);
 
             String line;
+            System.out.println(bufferedReader.lines());
             while ((line = bufferedReader.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 response.getWriter().println(line);
             }
         } catch (IOException e) {
@@ -69,14 +68,14 @@ public class VideoController1 {
 
     }
 
-    private List<String> getPlaylistSegments() {
-        return null;
-    }
+    @RequestMapping(value = "/{vid}/{clarity}/{segment}", method = RequestMethod.GET)
+    public void segment(@PathVariable String vid,@PathVariable String clarity,@PathVariable String segment, HttpServletResponse response) throws Exception {
 
-    @RequestMapping(value = "/{segment}", method = RequestMethod.GET)
-    public void segment(@PathVariable String segment, HttpServletResponse response) throws Exception {
-        System.out.println(segment);
-        File file = new File("D:\\下载\\Video\\11\\" + segment);
+        LambdaQueryChainWrapper<VideoFile> query = fileService.lambdaQuery();
+        VideoFile one = query.eq(VideoFile::getFileId, vid).select().one();
+//        System.out.println(one);
+
+        File file = new File("D:\\下载\\Video\\"+one.getUid()+"\\"+one.getFileId()+"\\360\\" + segment);
         if (!file.exists()) {
             throw new FileNotFoundException("Segment not found.");
         }
